@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partner Competition — Bangkok Event 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0e14;
+  --surface: #111620;
+  --surface2: #171d2a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #f0f2f5;
+  --muted: #6b7585;
+  --muted2: #8e97a8;
+  --accent: #00d4a8;
+  --accent-dim: rgba(0,212,168,0.12);
+  --accent-glow: rgba(0,212,168,0.25);
+  --gold: #f5c842;
+  --silver: #b0bec5;
+  --bronze: #cd8b5a;
+  --new-color: #7c6fea;
+  --new-dim: rgba(124,111,234,0.12);
+  --new-glow: rgba(124,111,234,0.28);
+  --leg-color: #00d4a8;
+  --leg-dim: rgba(0,212,168,0.12);
+  --leg-glow: rgba(0,212,168,0.28);
+  --sea: #4ecdc4; --sea-bg: rgba(78,205,196,0.1);
+  --kor: #667eea; --kor-bg: rgba(102,126,234,0.1);
+  --jpn: #f093a0; --jpn-bg: rgba(240,147,160,0.1);
+  --hkg: #f5a623; --hkg-bg: rgba(245,166,35,0.1);
+  --positive: #00d4a8;
+  --negative: #ff6b7a;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-mono); font-size: 13px; min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(0,212,168,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,168,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; position: relative; z-index: 1; }
+
+.header { margin-bottom: 36px; animation: fadeUp 0.6s ease both; }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.competition-title { font-family: var(--font-display); font-size: clamp(26px,5vw,40px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; background: linear-gradient(135deg,#f0f2f5 0%,var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.bangkok-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--gold) 0%, #ff8c00 60%, #ff4e00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+.bangkok-tag::after {
+  content: '';
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), #ff4e00);
+  margin-top: 2px;
+  opacity: 0.7;
+}
+.live-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); border: 1px solid var(--accent-glow); color: var(--accent); font-size: 11px; padding: 5px 12px; border-radius: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
+.live-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+.header-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+.time-bar { margin-bottom: 32px; animation: fadeUp 0.5s 0.05s ease both; }
+.time-bar-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 7px; }
+.time-bar-info strong { color: var(--accent); }
+.time-track { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.time-fill { height: 100%; background: linear-gradient(90deg,var(--accent),#667eea); border-radius: 2px; transition: width 1s ease; position: relative; }
+.time-fill::after { content: ''; position: absolute; right: 0; top: -2px; width: 7px; height: 7px; background: #fff; border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+
+.prize-section { margin-bottom: 36px; animation: fadeUp 0.6s 0.07s ease both; }
+.prize-header { text-align: center; margin-bottom: 20px; }
+.prize-eyebrow { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.prize-title { font-family: var(--font-display); font-size: clamp(20px,4vw,30px); font-weight: 800; line-height: 1.15; }
+.prize-title .hl { background: linear-gradient(135deg,var(--gold),#ffaa00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.prize-sub { font-size: 13px; color: var(--muted2); margin-top: 8px; line-height: 1.6; }
+
+.winners-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.winner-card { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.winner-card.new-track { border-color: rgba(124,111,234,0.3); }
+.winner-card.leg-track { border-color: rgba(0,212,168,0.3); }
+.winner-card-top { padding: 16px 18px 14px; }
+.winner-card.new-track .winner-card-top { background: linear-gradient(135deg,rgba(124,111,234,0.12),rgba(124,111,234,0.04)); }
+.winner-card.leg-track .winner-card-top { background: linear-gradient(135deg,rgba(0,212,168,0.1),rgba(0,212,168,0.03)); }
+.track-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; margin-bottom: 6px; }
+.new-track .track-label { color: var(--new-color); }
+.leg-track .track-label { color: var(--leg-color); }
+.winner-track-name { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 6px; }
+.winner-desc { font-size: 11px; color: var(--muted2); line-height: 1.55; }
+.winner-prize-row { display: flex; align-items: center; gap: 8px; padding: 11px 18px; border-top: 1px solid var(--border); background: var(--surface2); }
+.ticket-mini { font-size: 16px; }
+.prize-text-sm { font-size: 11px; color: var(--muted2); line-height: 1.4; }
+.prize-text-sm strong { color: var(--gold); font-size: 12px; }
+
+.city-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 8px; }
+.city-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; aspect-ratio: 4/3; transition: transform 0.25s, border-color 0.25s; }
+.city-card:hover { transform: translateY(-3px); border-color: var(--border2); }
+.city-card img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.72) saturate(1.1); transition: transform 0.4s, filter 0.3s; }
+.city-card:hover img { transform: scale(1.05); filter: brightness(0.85) saturate(1.2); }
+.city-overlay { position: absolute; inset: 0; background: linear-gradient(to top,rgba(5,8,14,0.92) 0%,rgba(5,8,14,0.2) 60%,transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; }
+.city-flag { font-size: 18px; margin-bottom: 4px; }
+.city-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+.city-tagline { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.04em; }
+.city-choose { margin-top: 8px; display: inline-block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(245,200,66,0.3); background: rgba(245,200,66,0.08); border-radius: 4px; padding: 2px 8px; }
+.city-caption { text-align: center; font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+.perks-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.perk-pill { display: inline-flex; align-items: center; gap: 5px; background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 5px 12px; font-size: 11px; color: var(--muted2); }
+.perk-pill .pi { color: var(--accent); }
+
+.goals-section { margin-bottom: 20px; animation: fadeUp 0.6s 0.1s ease both; }
+.goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.goal-card { background: var(--surface); border-radius: 13px; padding: 18px 20px; position: relative; overflow: hidden; border: 1px solid var(--border); }
+.goal-card.new-track { border-color: rgba(124,111,234,0.25); }
+.goal-card.leg-track { border-color: rgba(0,212,168,0.2); }
+.goal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; }
+.goal-card.new-track::before { background: linear-gradient(90deg,transparent,rgba(124,111,234,0.5),transparent); }
+.goal-card.leg-track::before { background: linear-gradient(90deg,transparent,rgba(0,212,168,0.4),transparent); }
+.goal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+.goal-label { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.goal-amounts { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+.goal-current { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); }
+.goal-sep { font-size: 12px; color: var(--muted); }
+.goal-target { font-size: 12px; color: var(--muted2); }
+.goal-pct { font-family: var(--font-display); font-size: 20px; font-weight: 800; white-space: nowrap; }
+.goal-pct.locked { color: var(--muted); }
+.goal-pct.new-unlocked { color: var(--new-color); }
+.goal-pct.leg-unlocked { color: var(--leg-color); }
+.goal-status-pill { display: inline-block; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; margin-top: 3px; font-weight: 500; white-space: nowrap; }
+.pill-locked { background: rgba(255,107,122,0.1); color: #ff6b7a; border: 1px solid rgba(255,107,122,0.25); }
+.pill-new-unlocked { background: var(--new-dim); color: var(--new-color); border: 1px solid var(--new-glow); }
+.pill-leg-unlocked { background: var(--leg-dim); color: var(--leg-color); border: 1px solid var(--leg-glow); }
+.pill-goal { background: rgba(245,200,66,0.1); color: var(--gold); border: 1px solid rgba(245,200,66,0.25); }
+.goal-bar-track { height: 8px; background: var(--surface2); border-radius: 5px; overflow: hidden; margin-bottom: 6px; }
+.goal-bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+.goal-bar-fill.locked-fill { background: linear-gradient(90deg,#ff6b7a88,#ff6b7a); }
+.goal-bar-fill.new-fill { background: linear-gradient(90deg,#7c6fea,#a78bfa); }
+.goal-bar-fill.leg-fill { background: linear-gradient(90deg,var(--accent),#38b2a0); }
+.goal-milestones { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); }
+.goal-msg { font-size: 11px; margin-top: 10px; line-height: 1.5; }
+.goal-msg.warn { color: #ff6b7a; }
+.goal-msg.ok-new { color: var(--new-color); }
+.goal-msg.ok-leg { color: var(--leg-color); }
+
+.overall-goal { background: var(--surface); border: 1px solid rgba(245,200,66,0.2); border-radius: 13px; padding: 16px 20px; margin-bottom: 28px; animation: fadeUp 0.6s 0.12s ease both; position: relative; overflow: hidden; }
+.overall-goal::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(90deg,transparent,rgba(245,200,66,0.4),transparent); }
+.og-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.og-label { font-size: 10px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+.og-amounts { display: flex; align-items: baseline; gap: 5px; }
+.og-current { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); }
+.og-sep { font-size: 12px; color: var(--muted); }
+.og-target { font-size: 12px; color: var(--muted2); }
+.og-pct { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--gold); }
+.og-bar-track { height: 6px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
+.og-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg,var(--gold),#ffaa00); transition: width 0.8s ease; }
+.og-milestones { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); }
+.og-threshold { font-size: 11px; color: var(--muted2); margin-top: 8px; }
+.og-threshold strong { color: var(--gold); }
+
+.tab-section { margin-bottom: 28px; animation: fadeUp 0.6s 0.15s ease both; }
+.tab-nav { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tab-btn { font-family: var(--font-mono); font-size: 12px; padding: 9px 18px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted2); cursor: pointer; transition: all 0.18s; letter-spacing: 0.04em; margin-bottom: -1px; white-space: nowrap; min-height: 40px; touch-action: manipulation; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active-new { color: var(--new-color); border-bottom-color: var(--new-color); }
+.tab-btn.active-leg { color: var(--leg-color); border-bottom-color: var(--leg-color); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+.controls { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.search-wrap { flex: 1; min-width: 140px; position: relative; }
+.search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 8px 32px; color: var(--text); font-family: var(--font-mono); font-size: 13px; outline: none; transition: border-color 0.2s; }
+.search-wrap input:focus { border-color: var(--accent); }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+.filter-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 13px; color: var(--muted2); font-family: var(--font-mono); font-size: 12px; cursor: pointer; transition: all 0.15s; letter-spacing: 0.03em; min-height: 36px; touch-action: manipulation; }
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active { background: var(--accent-dim); border-color: var(--accent-glow); color: var(--accent); }
+
+.mini-meta { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 10px; margin-bottom: 16px; }
+.mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.mini-label { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.mini-value { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); }
+.mini-value.new-col { color: var(--new-color); }
+.mini-value.leg-col { color: var(--leg-color); }
+.mini-value.sm { font-size: 14px; }
+
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 13px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; }
+thead th { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; background: var(--surface2); transition: color 0.15s; }
+thead th:hover { color: var(--text); }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.13s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface2); }
+td { padding: 10px 14px; vertical-align: middle; }
+.rank-cell { width: 36px; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--muted); }
+.rank-cell.gold { color: var(--gold); }
+.rank-cell.silver { color: var(--silver); }
+.rank-cell.bronze { color: var(--bronze); }
+.partner-name { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text); }
+.group-pill { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 7px; letter-spacing: 0.05em; vertical-align: middle; }
+.pill-SEA { background: var(--sea-bg); color: var(--sea); border: 1px solid rgba(78,205,196,0.2); }
+.pill-KOR { background: var(--kor-bg); color: var(--kor); border: 1px solid rgba(102,126,234,0.2); }
+.pill-JPN { background: var(--jpn-bg); color: var(--jpn); border: 1px solid rgba(240,147,160,0.2); }
+.pill-HKG { background: var(--hkg-bg); color: var(--hkg); border: 1px solid rgba(245,166,35,0.2); }
+.clients-cell { text-align: center; font-size: 12px; color: var(--muted2); }
+.deposit-cell { min-width: 160px; }
+.deposit-row { display: flex; align-items: center; gap: 8px; }
+.bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.bar-fill-new { height: 100%; border-radius: 2px; background: var(--new-color); transition: width 0.5s ease; }
+.bar-fill-leg { height: 100%; border-radius: 2px; background: var(--leg-color); transition: width 0.5s ease; }
+.bar-fill-neg { height: 100%; border-radius: 2px; background: var(--negative); }
+.deposit-amount { font-family: var(--font-mono); font-size: 12px; font-weight: 500; min-width: 65px; text-align: right; }
+.deposit-amount.pos-new { color: var(--new-color); }
+.deposit-amount.pos-leg { color: var(--leg-color); }
+.deposit-amount.neg { color: var(--negative); }
+.deposit-amount.zero { color: var(--muted); }
+.action-cell { text-align: right; }
+.edit-btn { background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted2); font-family: var(--font-mono); font-size: 11px; padding: 5px 10px; cursor: pointer; transition: all 0.15s; min-height: 30px; touch-action: manipulation; }
+.edit-btn:hover { border-color: var(--accent-glow); color: var(--accent); background: var(--accent-dim); }
+
+.tc-section { margin-top: 28px; animation: fadeUp 0.6s 0.3s ease both; }
+.tc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 13px; overflow: hidden; }
+.tc-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; cursor: pointer; user-select: none; transition: background 0.15s; }
+.tc-header:hover { background: var(--surface2); }
+.tc-header-left { display: flex; align-items: center; gap: 9px; }
+.tc-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.tc-chevron { font-size: 11px; color: var(--muted); transition: transform 0.2s; }
+.tc-chevron.open { transform: rotate(180deg); }
+.tc-body { display: none; padding: 0 18px 18px; }
+.tc-body.open { display: block; }
+.tc-highlight-row { margin-top: 14px; padding: 11px 13px; background: rgba(245,200,66,0.06); border: 1px solid rgba(245,200,66,0.2); border-radius: 8px; font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.tc-highlight-row strong { color: var(--gold); }
+.tc-list { list-style: none; margin-top: 12px; }
+.tc-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.tc-list li:last-child { border-bottom: none; }
+.tc-num { font-size: 10px; color: var(--muted); min-width: 16px; margin-top: 2px; }
+.tc-key { color: var(--text); font-weight: 500; }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; padding: 26px 26px 22px; width: 400px; max-width: 94vw; position: relative; animation: modalIn 0.2s ease; }
+.modal-box::before { content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 1px; background: linear-gradient(90deg,transparent,var(--accent-glow),transparent); }
+.modal-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.modal-sub { font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+.modal-section-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; margin-top: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.modal-section-label.new-col { color: var(--new-color); }
+.modal-section-label.leg-col { color: var(--leg-color); }
+.modal-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-label { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; display: block; }
+.field-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; color: var(--text); font-family: var(--font-mono); font-size: 13px; outline: none; transition: border-color 0.2s; margin-bottom: 0; }
+.field-input:focus { border-color: var(--accent); }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+.btn-save { background: var(--accent); border: none; border-radius: 8px; color: #0a0e14; font-family: var(--font-mono); font-size: 13px; font-weight: 500; padding: 10px 18px; cursor: pointer; transition: opacity 0.15s; min-height: 44px; touch-action: manipulation; }
+.btn-save:hover { opacity: 0.88; }
+.btn-cancel-m { background: transparent; border: 1px solid var(--border2); border-radius: 8px; color: var(--muted2); font-family: var(--font-mono); font-size: 13px; padding: 10px 14px; cursor: pointer; transition: all 0.15s; min-height: 44px; touch-action: manipulation; }
+.btn-cancel-m:hover { color: var(--text); border-color: var(--text); }
+
+.admin-notice { margin-top: 18px; padding: 11px 14px; background: rgba(102,126,234,0.07); border: 1px solid rgba(102,126,234,0.18); border-radius: 8px; font-size: 11px; color: var(--muted2); text-align: center; letter-spacing: 0.03em; }
+
+/* ══ HERO ANIMATION ══ */
+.hero-wrap {
+  position: relative; width: 100%; height: 420px; overflow: hidden;
+  background: linear-gradient(160deg, #060a12 0%, #0d1525 40%, #0a1020 100%);
+  border-bottom: 1px solid rgba(0,212,168,0.15);
+  margin-bottom: 0;
+}
+#hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ATP Phone - matches real AXI app */
+.atp-phone {
+  position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
+  animation: phoneFloat 4s ease-in-out infinite, phoneFadeIn 1s 0.3s ease both;
+  z-index: 10; filter: drop-shadow(0 24px 60px rgba(0,0,0,0.6)) drop-shadow(0 0 30px rgba(0,180,150,0.2));
+}
+.phone-shell {
+  width: 148px;
+  background: #ffffff;
+  border-radius: 28px;
+  border: 2px solid rgba(255,255,255,0.9);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.phone-status-bar {
+  background: #fff; display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 10px 2px; font-size: 7px; color: #333;
+}
+.phone-status-left { display: flex; align-items: center; gap: 3px; }
+.live-pill { background: #22c55e; color: #fff; font-size: 6px; font-weight: 700; padding: 1px 4px; border-radius: 3px; letter-spacing: 0.05em; }
+.phone-status-right { font-size: 7px; color: #888; }
+.phone-screen {
+  background: #f8f9fa;
+  padding: 0;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+
+/* AXI App top bar */
+.axi-topbar {
+  background: #fff; padding: 6px 10px 4px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 0.5px solid #eee; position: relative;
+}
+.axi-topbar-logo {
+  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
+  color: #e63312; letter-spacing: -0.02em;
+}
+.axi-topbar-icons { position: absolute; right: 10px; display: flex; gap: 6px; }
+.axi-icon { width: 14px; height: 14px; opacity: 0.5; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+
+/* Balance section */
+.axi-balance {
+  background: #fff; padding: 6px 10px 8px; text-align: center;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+.axi-balance-label { font-size: 7px; color: #999; margin-bottom: 2px; }
+.axi-balance-amount { font-size: 17px; font-weight: 700; color: #111; letter-spacing: -0.02em; }
+.axi-balance-amount sup { font-size: 9px; font-weight: 500; }
+
+/* Category pills */
+.axi-cats {
+  background: #fff; display: flex; gap: 6px; padding: 5px 8px;
+  border-bottom: 0.5px solid #eee;
+}
+.axi-cat {
+  flex: 1; background: #f4f4f5; border-radius: 8px; padding: 4px 3px;
+  font-size: 7px; font-weight: 600; color: #333; text-align: center; line-height: 1.3;
+}
+.axi-cat-label { font-size: 6px; color: #888; margin-bottom: 1px; }
+
+/* Section header */
+.axi-section-hdr {
+  padding: 5px 8px 3px; display: flex; align-items: center; gap: 3px;
+  background: #f8f9fa;
+}
+.axi-section-line { width: 3px; height: 10px; background: #e63312; border-radius: 1px; }
+.axi-section-title { font-size: 8px; font-weight: 700; color: #111; }
+.axi-section-more { font-size: 7px; color: #999; margin-left: auto; }
+
+/* Market tiles */
+.axi-markets {
+  display: flex; gap: 4px; padding: 3px 8px 5px; background: #fff; overflow: hidden;
+}
+.axi-market-tile {
+  flex: 1; background: #f8f9fa; border-radius: 7px; padding: 4px 3px; text-align: center;
+  border: 0.5px solid #eee;
+}
+.axi-market-name { font-size: 7px; font-weight: 600; color: #111; margin-bottom: 1px; }
+.axi-market-badge { display: inline-block; font-size: 5px; background: #e8e8e8; color: #666; border-radius: 2px; padding: 0 2px; margin-bottom: 2px; }
+.axi-market-chg { font-size: 8px; font-weight: 700; }
+.axi-market-chg.up { color: #16a34a; }
+.axi-market-chg.dn { color: #dc2626; }
+.axi-market-price { font-size: 6px; color: #999; }
+
+/* Position row */
+.axi-position {
+  background: #fff; margin: 3px 8px; border-radius: 8px; padding: 5px 7px;
+  border: 0.5px solid #eee; display: flex; align-items: center; justify-content: space-between;
+}
+.axi-pos-left { }
+.axi-pos-pair { font-size: 8px; font-weight: 700; color: #111; }
+.axi-pos-badge { display: inline-block; font-size: 5px; background: #e8e8e8; color: #555; border-radius: 2px; padding: 0 2px; margin-left: 2px; }
+.axi-pos-sub { font-size: 6px; color: #16a34a; margin-top: 1px; }
+.axi-pos-right { text-align: right; }
+.axi-pos-pnl { font-size: 9px; font-weight: 700; color: #dc2626; }
+.axi-pos-price { font-size: 6px; color: #999; }
+
+/* Watchlist */
+.axi-watch-row {
+  display: flex; align-items: center; padding: 4px 8px; background: #fff;
+  border-bottom: 0.5px solid #f2f2f2;
+}
+.axi-watch-left { flex: 1; }
+.axi-watch-name { font-size: 7px; font-weight: 600; color: #111; }
+.axi-watch-chg { font-size: 6px; }
+.axi-watch-chg.dn { color: #dc2626; }
+.axi-watch-chg.up { color: #16a34a; }
+.axi-watch-sell { background: #f0f0f0; border-radius: 4px; padding: 3px 5px; font-size: 6px; font-weight: 600; color: #333; margin-right: 3px; }
+.axi-watch-buy { background: #f0f0f0; border-radius: 4px; padding: 3px 5px; font-size: 6px; font-weight: 600; color: #333; }
+
+/* Bottom nav */
+.axi-bottomnav {
+  background: #fff; display: flex; border-top: 0.5px solid #eee; padding: 5px 0 6px;
+}
+.axi-nav-item { flex: 1; text-align: center; font-size: 6px; color: #999; }
+.axi-nav-item.active { color: #e63312; }
+.axi-nav-icon { font-size: 12px; display: block; margin-bottom: 1px; line-height: 1; }
+
+/* Celebration figure */
+.celeb-wrap {
+  position: absolute; left: 10%; bottom: 0;
+  animation: celebFadeIn 1.2s 0.8s ease both;
+  z-index: 10;
+}
+.celeb-svg { width: 110px; height: 210px; animation: celebBounce 2.5s ease-in-out infinite; filter: drop-shadow(0 10px 30px rgba(0,212,168,0.3)); }
+.confetti-wrap { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 160px; height: 220px; pointer-events: none; }
+.confetti-piece {
+  position: absolute; width: 7px; height: 7px; border-radius: 1px;
+  animation: confettiFall linear infinite;
+}
+
+/* Data chips */
+.data-chip {
+  position: absolute; font-family: 'DM Mono',monospace; font-size: 10px; font-weight: 500;
+  padding: 5px 10px; border-radius: 6px; letter-spacing: 0.06em;
+  background: rgba(10,14,20,0.85); border: 1px solid rgba(0,212,168,0.3);
+  color: #00d4a8; backdrop-filter: blur(4px); white-space: nowrap;
+  animation: chipFloat ease-in-out infinite;
+}
+.chip1 { top: 18%; left: 28%; animation-duration: 3.2s; animation-delay: 0s; }
+.chip2 { top: 38%; left: 22%; animation-duration: 3.8s; animation-delay: 0.6s; }
+.chip3 { top: 58%; left: 32%; animation-duration: 3s; animation-delay: 1.1s; color: var(--gold); border-color: rgba(245,200,66,0.35); }
+.chip4 { top: 25%; left: 48%; animation-duration: 4.1s; animation-delay: 0.3s; }
+
+@keyframes phoneFloat { 0%,100%{transform:translateY(-50%) rotate(-2deg);}50%{transform:translateY(calc(-50% - 12px)) rotate(2deg);} }
+@keyframes phoneFadeIn { from{opacity:0;transform:translateY(-40%) scale(0.8);}to{opacity:1;transform:translateY(-50%) scale(1);} }
+@keyframes celebBounce { 0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-14px) rotate(2deg);} }
+@keyframes celebFadeIn { from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);} }
+@keyframes chipFloat { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
+@keyframes confettiFall { 0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(220px) rotate(720deg);opacity:0;} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);} }
+@keyframes modalIn { from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);} }
+@keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.3;} }
+
+/* ── TABLET ── */
+@media(max-width:768px) {
+  .container { padding: 24px 16px 60px; }
+  .winners-grid { grid-template-columns: 1fr; }
+  .goals-grid { grid-template-columns: 1fr; }
+  .city-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .og-milestones { font-size: 9px; }
+  .tab-btn { font-size: 12px; padding: 9px 14px; }
+  .modal-box { width: 95vw; padding: 20px 18px 18px; }
+}
+
+/* ── MOBILE ── */
+@media(max-width:480px) {
+  /* Hero */
+  .hero-wrap { height: 260px; }
+  .atp-phone {
+    right: 3%;
+    transform: translateY(-50%) scale(0.68);
+    transform-origin: right center;
+  }
+  .celeb-wrap { left: 1%; }
+  .celeb-svg { width: 80px; height: 155px; }
+  .chip1 { display: none; }
+  .chip2 { top: 14%; left: 18%; font-size: 9px; padding: 4px 8px; }
+  .chip3 { top: 55%; left: 18%; font-size: 9px; padding: 4px 8px; }
+  .chip4 { display: none; }
+  .data-chip { font-size: 9px; padding: 4px 8px; }
+
+  /* Container */
+  .container { padding: 20px 14px 60px; }
+
+  /* Header */
+  .header { margin-bottom: 22px; }
+  .header-top { flex-direction: column; gap: 10px; }
+  .competition-title { font-size: clamp(24px, 8vw, 32px); }
+  .bangkok-tag { font-size: clamp(20px, 7vw, 28px); }
+  .live-badge { font-size: 10px; padding: 4px 10px; align-self: flex-start; }
+
+  /* Time bar */
+  .time-bar { margin-bottom: 20px; }
+
+  /* Prize section */
+  .prize-section { margin-bottom: 24px; }
+  .prize-sub { font-size: 12px; }
+  .winners-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+  .winner-card-top { padding: 14px 14px 12px; }
+  .winner-track-name { font-size: 14px; }
+
+  /* Perks row */
+  .perks-row { gap: 6px; }
+  .perk-pill { font-size: 10px; padding: 4px 10px; }
+
+  /* City grid */
+  .city-grid { grid-template-columns: 1fr; gap: 10px; }
+  .city-card { aspect-ratio: 16/9; }
+  .city-name { font-size: 18px; }
+
+  /* Goal cards */
+  .goals-section { margin-bottom: 16px; }
+  .goals-grid { grid-template-columns: 1fr; gap: 10px; }
+  .goal-card { padding: 14px 16px; }
+  .goal-current { font-size: 18px; }
+  .goal-pct { font-size: 18px; }
+  .goal-milestones { font-size: 9px; }
+
+  /* Overall goal */
+  .overall-goal { padding: 14px 16px; margin-bottom: 20px; }
+  .og-current { font-size: 18px; }
+  .og-pct { font-size: 18px; }
+  .og-milestones { font-size: 9px; }
+
+  /* Meta cards */
+  .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+  .mini-card { padding: 10px 12px; }
+  .mini-value { font-size: 15px; }
+  .mini-value.sm { font-size: 12px; }
+
+  /* Tab nav */
+  .tab-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; padding-bottom: 1px; }
+  .tab-btn { font-size: 11px; padding: 8px 12px; white-space: nowrap; }
+
+  /* Controls */
+  .controls { gap: 8px; }
+  .filter-btn { font-size: 11px; padding: 7px 10px; }
+  .search-wrap input { font-size: 14px; } /* prevents iOS zoom on focus */
+
+  /* Table */
+  .table-wrap { border-radius: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 340px; }
+  thead th { font-size: 9px; padding: 9px 10px; }
+  td { padding: 9px 10px; font-size: 12px; }
+  .partner-name { font-size: 12px; }
+  .group-pill { font-size: 9px; padding: 1px 5px; margin-left: 4px; }
+  .clients-cell { display: none; }
+  .deposit-cell { min-width: 110px; }
+  .deposit-amount { font-size: 11px; min-width: 55px; }
+  .rank-cell { width: 28px; font-size: 12px; }
+  .edit-btn { font-size: 10px; padding: 3px 7px; }
+
+  /* Modal */
+  .modal-overlay { align-items: flex-end; }
+  .modal-box {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 18px 32px;
+    margin: 0;
+  }
+  .modal-cols { grid-template-columns: 1fr; gap: 10px; }
+  .modal-section-label { margin-top: 10px; }
+  .field-input { font-size: 16px; } /* prevents iOS zoom */
+
+  /* T&C */
+  .tc-section { margin-top: 20px; }
+  .tc-list li { font-size: 11px; }
+  .tc-highlight-row { font-size: 11px; }
+
+  /* Admin notice */
+  .admin-notice { font-size: 10px; padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ANIMATION ══ -->
+<div class="hero-wrap">
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- Floating ATP phone — matches real AXI app -->
+  <div class="atp-phone">
+    <div class="phone-shell">
+
+      <!-- Status bar -->
+      <div class="phone-status-bar">
+        <div class="phone-status-left">
+          <span style="font-size:8px">👤</span>
+          <span class="live-pill">LIVE</span>
+        </div>
+        <div class="phone-status-right">●●●</div>
+      </div>
+
+      <div class="phone-screen">
+        <!-- AXI top bar -->
+        <div class="axi-topbar">
+          <div class="axi-topbar-logo">axi</div>
+          <div class="axi-topbar-icons">
+            <span class="axi-icon">⊕</span>
+            <span class="axi-icon">🔔</span>
+          </div>
+        </div>
+
+        <!-- Balance -->
+        <div class="axi-balance">
+          <div class="axi-balance-label">Available funds (USD)</div>
+          <div class="axi-balance-amount"><sup>US$</sup><span id="atp-balance">1,032</span><sup style="font-size:8px">.50 →</sup></div>
+        </div>
+
+        <!-- Category pills -->
+        <div class="axi-cats">
+          <div class="axi-cat"><div class="axi-cat-label">Cryptos ›</div><span style="font-size:7px;color:#f59e0b">₿</span></div>
+          <div class="axi-cat"><div class="axi-cat-label">CFDs ›</div><span style="font-size:7px;color:#3b82f6">📈</span></div>
+        </div>
+
+        <!-- Popular Markets -->
+        <div class="axi-section-hdr">
+          <div class="axi-section-line"></div>
+          <span class="axi-section-title">Popular Markets</span>
+        </div>
+        <div class="axi-markets">
+          <div class="axi-market-tile">
+            <div class="axi-market-name">Gold</div>
+            <div class="axi-market-chg up" id="atp-gold-chg">+0.68%</div>
+            <div class="axi-market-price" id="atp-gold-p">4711.1</div>
+          </div>
+          <div class="axi-market-tile">
+            <div class="axi-market-name" style="font-size:6px">Bitcoin</div>
+            <div class="axi-market-badge">PERP</div>
+            <div class="axi-market-chg dn" id="atp-btc-chg">-0.16%</div>
+            <div class="axi-market-price" id="atp-btc-p">79730.1</div>
+          </div>
+          <div class="axi-market-tile">
+            <div class="axi-market-name" style="font-size:6px">Ethereum</div>
+            <div class="axi-market-badge">PERP</div>
+            <div class="axi-market-chg dn">-0.19%</div>
+            <div class="axi-market-price">2285.09</div>
+          </div>
+        </div>
+
+        <!-- My Positions -->
+        <div class="axi-section-hdr" style="margin-top:2px">
+          <div class="axi-section-line"></div>
+          <span class="axi-section-title">My Positions</span>
+          <span class="axi-section-more">See more ›</span>
+        </div>
+        <div class="axi-position">
+          <div class="axi-pos-left">
+            <div class="axi-pos-pair">BTC/USDT <span class="axi-pos-badge">PERP</span></div>
+            <div class="axi-pos-sub">+0.01 @ 81642.9</div>
+          </div>
+          <div class="axi-pos-right">
+            <div class="axi-pos-pnl" id="atp-pnl">-US$19.27</div>
+            <div class="axi-pos-price">79730.1</div>
+          </div>
+        </div>
+
+        <!-- Watchlist -->
+        <div class="axi-section-hdr" style="margin-top:3px">
+          <div class="axi-section-line"></div>
+          <span class="axi-section-title">My Watchlist</span>
+          <span class="axi-section-more">See more ›</span>
+        </div>
+        <div style="background:#fff;padding:2px 8px;display:flex;font-size:6px;color:#aaa;justify-content:space-between;">
+          <span>Markets</span><span style="margin-right:18px">Sell</span><span>Buy</span>
+        </div>
+        <div class="axi-watch-row">
+          <div class="axi-watch-left">
+            <div class="axi-watch-name">Bitcoin <span class="axi-market-badge">PERP</span></div>
+            <div class="axi-watch-chg dn">-0.16%</div>
+          </div>
+          <span class="axi-watch-sell" id="atp-btc-sell">79730.10</span>
+          <span class="axi-watch-buy" id="atp-btc-buy">79730.20</span>
+        </div>
+        <div class="axi-watch-row">
+          <div class="axi-watch-left">
+            <div class="axi-watch-name">Ethereum <span class="axi-market-badge">PERP</span></div>
+            <div class="axi-watch-chg dn">-0.19%</div>
+          </div>
+          <span class="axi-watch-sell">2285.09</span>
+          <span class="axi-watch-buy">2285.10</span>
+        </div>
+
+        <!-- Bottom nav -->
+        <div class="axi-bottomnav">
+          <div class="axi-nav-item active"><span class="axi-nav-icon">⌂</span>Dashboard</div>
+          <div class="axi-nav-item"><span class="axi-nav-icon">☆</span>Watchlist</div>
+          <div class="axi-nav-item"><span class="axi-nav-icon">⊕</span>Markets</div>
+          <div class="axi-nav-item"><span class="axi-nav-icon">◎</span>Portfolio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Celebration figure -->
+  <div class="celeb-wrap">
+    <svg class="celeb-svg" viewBox="0 0 120 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- shadow -->
+      <ellipse cx="60" cy="210" rx="30" ry="6" fill="rgba(0,0,0,0.3)"/>
+      <!-- legs -->
+      <rect x="45" y="155" width="12" height="50" rx="6" fill="#1a2540"/>
+      <rect x="63" y="155" width="12" height="48" rx="6" fill="#1a2540"/>
+      <!-- shoes -->
+      <rect x="42" y="198" width="18" height="10" rx="4" fill="#0a0e14"/>
+      <rect x="60" y="196" width="18" height="10" rx="4" fill="#0a0e14"/>
+      <!-- body -->
+      <rect x="38" y="95" width="44" height="65" rx="10" fill="#00d4a8"/>
+      <!-- shirt detail -->
+      <rect x="55" y="97" width="10" height="60" rx="3" fill="rgba(255,255,255,0.12)"/>
+      <!-- left arm raised -->
+      <rect x="14" y="60" width="12" height="50" rx="6" fill="#00d4a8" transform="rotate(-40 20 85)"/>
+      <!-- right arm out -->
+      <rect x="82" y="100" width="12" height="40" rx="6" fill="#00d4a8" transform="rotate(20 88 120)"/>
+      <!-- neck -->
+      <rect x="53" y="82" width="14" height="16" rx="5" fill="#f5c0a0"/>
+      <!-- head -->
+      <ellipse cx="60" cy="68" rx="20" ry="22" fill="#f5c0a0"/>
+      <!-- hair -->
+      <ellipse cx="60" cy="50" rx="20" ry="12" fill="#3d2314"/>
+      <rect x="40" y="48" width="6" height="14" rx="3" fill="#3d2314"/>
+      <rect x="74" y="48" width="6" height="14" rx="3" fill="#3d2314"/>
+      <!-- eyes -->
+      <ellipse cx="52" cy="66" rx="3.5" ry="4" fill="white"/>
+      <ellipse cx="68" cy="66" rx="3.5" ry="4" fill="white"/>
+      <ellipse cx="53" cy="67" rx="2" ry="2.5" fill="#1a1a2e"/>
+      <ellipse cx="69" cy="67" rx="2" ry="2.5" fill="#1a1a2e"/>
+      <!-- smile -->
+      <path d="M50 78 Q60 87 70 78" stroke="#c0705a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- trophy in right hand -->
+      <rect x="88" y="88" width="18" height="22" rx="3" fill="#f5c842"/>
+      <rect x="91" y="108" width="12" height="5" rx="1" fill="#d4a017"/>
+      <rect x="88" y="112" width="18" height="4" rx="1" fill="#d4a017"/>
+      <!-- trophy handles -->
+      <path d="M88 94 Q81 97 83 103 Q85 107 88 105" stroke="#f5c842" stroke-width="2.5" fill="none"/>
+      <path d="M106 94 Q113 97 111 103 Q109 107 106 105" stroke="#f5c842" stroke-width="2.5" fill="none"/>
+      <!-- star on trophy -->
+      <text x="93" y="105" font-size="10" fill="#fff" font-family="serif">★</text>
+      <!-- left hand raised fist -->
+      <ellipse cx="22" cy="62" rx="8" ry="9" fill="#f5c0a0"/>
+    </svg>
+    <!-- confetti burst -->
+    <div class="confetti-wrap" id="confetti-wrap"></div>
+  </div>
+
+  <!-- Floating data chips -->
+  <div class="data-chip chip1">NET DEPOSIT +$2.4M</div>
+  <div class="data-chip chip2">NEW CLIENTS +147</div>
+  <div class="data-chip chip3">🏆 WINNER</div>
+  <div class="data-chip chip4">XAU/USD ▲</div>
+
+</div>
+
+<div class="container">
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="competition-title">Partner Competition<br><span class="bangkok-tag">Bangkok Event 2026</span></div>
+      <div class="header-sub" id="days-txt">—</div>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span>Live Rankings</div>
+  </div>
+</div>
+
+<div class="time-bar">
+  <div class="time-bar-info"><span>15 May → 30 Jun 2026</span><strong id="prog-label">0%</strong></div>
+  <div class="time-track"><div class="time-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="prize-section">
+  <div class="prize-header">
+    <div class="prize-eyebrow">✦ Two Winners · Two Prizes ✦</div>
+    <div class="prize-title">Win a <span class="hl">Hospitality Trip</span> to Our Global Offices</div>
+    <div class="prize-sub">Two separate competitions, two independent winners — each earns 2 hospitality tickets.<br>Choose your battlefield and compete to win.</div>
+  </div>
+
+  <div class="winners-grid">
+    <div class="winner-card new-track">
+      <div class="winner-card-top">
+        <div class="track-label">🟣 Track 1 · New Clients</div>
+        <div class="winner-track-name">Biggest New Client Net Deposit</div>
+        <div class="winner-desc">Bring in new clients and grow their funded capital. The partner with the highest net deposit from new clients wins. Group goal: $10M from new clients.</div>
+      </div>
+      <div class="winner-prize-row">
+        <span class="ticket-mini">🎟</span>
+        <div class="prize-text-sm"><strong>2 Hospitality Tickets · 1 Week</strong><br>Flights + hotel · Winner picks the city</div>
+      </div>
+    </div>
+    <div class="winner-card leg-track">
+      <div class="winner-card-top">
+        <div class="track-label">🟢 Track 2 · Legacy Reactivation</div>
+        <div class="winner-track-name">Biggest Existing Client Net Deposit</div>
+        <div class="winner-desc">Reactivate existing clients and bring more funds in. The partner with the highest net deposit from existing clients wins. Group goal: $10M from legacy clients.</div>
+      </div>
+      <div class="winner-prize-row">
+        <span class="ticket-mini">🎟</span>
+        <div class="prize-text-sm"><strong>2 Hospitality Tickets · 1 Week</strong><br>Flights + hotel · Winner picks the city</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="perks-row">
+    <div class="perk-pill"><span class="pi">✈</span> Return flights</div>
+    <div class="perk-pill"><span class="pi">🏨</span> Hotel accommodation</div>
+    <div class="perk-pill"><span class="pi">📅</span> Full week</div>
+    <div class="perk-pill"><span class="pi">👥</span> Bring a guest</div>
+    <div class="perk-pill"><span class="pi">🌍</span> You pick the city</div>
+  </div>
+
+  <div class="city-grid">
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80&auto=format&fit=crop" alt="London Tower Bridge" loading="lazy">
+      <div class="city-overlay">
+        <div class="city-flag">🇬🇧</div>
+        <div class="city-name">London</div>
+        <div class="city-tagline">United Kingdom · Europe HQ</div>
+        <span class="city-choose">Choose this city</span>
+      </div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&q=80&auto=format&fit=crop" alt="Sydney Opera House" loading="lazy">
+      <div class="city-overlay">
+        <div class="city-flag">🇦🇺</div>
+        <div class="city-name">Sydney</div>
+        <div class="city-tagline">Australia · Asia-Pacific HQ</div>
+        <span class="city-choose">Choose this city</span>
+      </div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80&auto=format&fit=crop" alt="Singapore Marina Bay" loading="lazy">
+      <div class="city-overlay">
+        <div class="city-flag">🇸🇬</div>
+        <div class="city-name">Singapore</div>
+        <div class="city-tagline">Singapore · SEA HQ</div>
+        <span class="city-choose">Choose this city</span>
+      </div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop" alt="Dubai Burj Khalifa skyline" loading="lazy">
+      <div class="city-overlay">
+        <div class="city-flag">🇦🇪</div>
+        <div class="city-name">Dubai</div>
+        <div class="city-tagline">UAE · Middle East HQ</div>
+        <span class="city-choose">Choose this city</span>
+      </div>
+    </div>
+  </div>
+  <div class="city-caption">London · Sydney · Singapore · Dubai — winner selects their preferred destination</div>
+</div>
+
+<!-- DUAL GOALS -->
+<div class="goals-section">
+  <div class="goals-grid">
+    <div class="goal-card new-track">
+      <div class="goal-top">
+        <div>
+          <div class="goal-label">🟣 New client deposits</div>
+          <div class="goal-amounts">
+            <span class="goal-current" id="new-current">$0</span>
+            <span class="goal-sep">/</span>
+            <span class="goal-target">$10M goal</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="goal-pct locked" id="new-pct">0%</div>
+          <div class="goal-status-pill pill-locked" id="new-pill">Prize locked</div>
+        </div>
+      </div>
+      <div class="goal-bar-track"><div class="goal-bar-fill locked-fill" id="new-bar" style="width:0%"></div></div>
+      <div class="goal-milestones"><span>$0</span><span>$2.5M</span><span>$5M ⚑</span><span>$7.5M</span><span>$10M</span></div>
+      <div class="goal-msg warn" id="new-msg">⚠ $5M minimum (50%) needed to unlock this prize.</div>
+    </div>
+    <div class="goal-card leg-track">
+      <div class="goal-top">
+        <div>
+          <div class="goal-label">🟢 Legacy client deposits</div>
+          <div class="goal-amounts">
+            <span class="goal-current" id="leg-current">$0</span>
+            <span class="goal-sep">/</span>
+            <span class="goal-target">$10M goal</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="goal-pct locked" id="leg-pct">0%</div>
+          <div class="goal-status-pill pill-locked" id="leg-pill">Prize locked</div>
+        </div>
+      </div>
+      <div class="goal-bar-track"><div class="goal-bar-fill locked-fill" id="leg-bar" style="width:0%"></div></div>
+      <div class="goal-milestones"><span>$0</span><span>$2.5M</span><span>$5M ⚑</span><span>$7.5M</span><span>$10M</span></div>
+      <div class="goal-msg warn" id="leg-msg">⚠ $5M minimum (50%) needed to unlock this prize.</div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERALL GOAL -->
+<div class="overall-goal">
+  <div class="og-row">
+    <div>
+      <div class="og-label">Combined group target — $20M total</div>
+      <div class="og-amounts">
+        <span class="og-current" id="og-current">$0</span>
+        <span class="og-sep">/</span>
+        <span class="og-target">$20M</span>
+      </div>
+    </div>
+    <div style="text-align:right"><div class="og-pct" id="og-pct">0%</div></div>
+  </div>
+  <div class="og-bar-track"><div class="og-bar-fill" id="og-bar" style="width:0%"></div></div>
+  <div class="og-milestones"><span>$0</span><span>$5M</span><span>$10M</span><span>$15M</span><span>$20M</span></div>
+  <div class="og-threshold">Each track independently requires <strong>$5M (50%)</strong> to unlock its prize. Both prizes can be won independently.</div>
+</div>
+
+<!-- LEADERBOARDS -->
+<div class="tab-section">
+  <div class="mini-meta">
+    <div class="mini-card"><div class="mini-label">🟣 New client total</div><div class="mini-value new-col sm" id="new-total">$0</div></div>
+    <div class="mini-card"><div class="mini-label">🟢 Legacy client total</div><div class="mini-value leg-col sm" id="leg-total">$0</div></div>
+    <div class="mini-card"><div class="mini-label">🟣 New client leader</div><div class="mini-value sm" id="new-leader">—</div></div>
+    <div class="mini-card"><div class="mini-label">🟢 Legacy client leader</div><div class="mini-value sm" id="leg-leader">—</div></div>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap"><span class="search-icon">⌕</span><input type="text" id="search-all" placeholder="Search partner..." oninput="renderAll()"></div>
+    <button class="filter-btn active" onclick="setFilterAll('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilterAll('SEA',this)">SEA</button>
+    <button class="filter-btn" onclick="setFilterAll('KOR',this)">Korea</button>
+    <button class="filter-btn" onclick="setFilterAll('JPN',this)">Japan</button>
+    <button class="filter-btn" onclick="setFilterAll('HKG',this)">HK</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th onclick="toggleSortAll('new')">#🟣</th>
+        <th>Partner</th>
+        <th onclick="toggleSortAll('new')" style="color:#7c6fea">🟣 New client net deposit</th>
+        <th onclick="toggleSortAll('leg')" style="color:#00d4a8">🟢 Legacy client net deposit</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-all"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="admin-notice">Two independent tracks · Two winners · Competition: 15 May – 30 June 2026</div>
+
+<div class="tc-section">
+  <div class="tc-card">
+    <div class="tc-header" onclick="toggleTC()">
+      <div class="tc-header-left"><span>📋</span><span class="tc-title">Terms &amp; Conditions</span></div>
+      <span class="tc-chevron" id="tc-chevron">▼</span>
+    </div>
+    <div class="tc-body" id="tc-body">
+      <div class="tc-highlight-row">
+        <strong>⚠ Two independent prizes, two independent thresholds.</strong> Track 1 (New Clients) has a $10M goal — prize only awarded if the group reaches <strong>$5M (50%)</strong> in new client net deposits. Track 2 (Legacy Reactivation) has a $10M goal — prize only awarded if the group reaches <strong>$5M (50%)</strong> in legacy net deposits. Both prizes are assessed and awarded independently. Combined group target: <strong>$20M</strong>.
+      </div>
+      <ul class="tc-list">
+        <li><span class="tc-num">1.</span><span><span class="tc-key">Eligibility.</span> Open to all 33 registered partners on this leaderboard. Participation constitutes acceptance of these terms.</span></li>
+        <li><span class="tc-num">2.</span><span><span class="tc-key">Competition period.</span> 15 May 2026 00:00 to 30 June 2026 23:59 (SGT). Only net deposits recorded within this window are counted.</span></li>
+        <li><span class="tc-num">3.</span><span><span class="tc-key">Two independent tracks.</span> Track 1 (New Clients) and Track 2 (Legacy Reactivation) are scored and awarded entirely separately. A partner may compete in both tracks and can win both prizes.</span></li>
+        <li><span class="tc-num">4.</span><span><span class="tc-key">New client (Track 1).</span> A new client is one who has never previously funded an account with the firm. Net deposit = all new client deposits minus withdrawals within the competition period, attributed to the partner.</span></li>
+        <li><span class="tc-num">5.</span><span><span class="tc-key">Legacy client (Track 2).</span> An existing client who previously held or closed a funded account and is being reactivated. Net deposit = returning client deposits minus withdrawals within the period, attributed to the partner.</span></li>
+        <li><span class="tc-num">6.</span><span><span class="tc-key">Prize thresholds.</span> Track 1 prize requires the group's combined new client net deposit to reach at least $5,000,000. Track 2 prize requires the group's combined legacy net deposit to reach at least $5,000,000. Each threshold is assessed independently.</span></li>
+        <li><span class="tc-num">7.</span><span><span class="tc-key">Prize.</span> Each track winner receives 2 hospitality tickets for a 1-week visit to London (UK), Sydney (Australia), Singapore, or Dubai (UAE) — winner's choice. Includes return flights and hotel accommodation for 2 people.</span></li>
+        <li><span class="tc-num">8.</span><span><span class="tc-key">Destination &amp; travel dates.</span> Winner selects their preferred city. Travel dates subject to availability and must be agreed with the organiser within 60 days of competition close.</span></li>
+        <li><span class="tc-num">9.</span><span><span class="tc-key">Non-transferable.</span> Prizes cannot be exchanged for cash or any alternative. Tickets are non-transferable to another person.</span></li>
+        <li><span class="tc-num">10.</span><span><span class="tc-key">Verification &amp; disputes.</span> All deposit figures are subject to verification by the organiser. In the event of a tie, the organiser's decision is final.</span></li>
+        <li><span class="tc-num">11.</span><span><span class="tc-key">Amendments.</span> The organiser reserves the right to amend or withdraw the competition with reasonable notice. Partners will be informed of any material changes.</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-name">Update partner data</div>
+    <div class="modal-sub">Enter figures for each track — leave blank if none</div>
+
+    <div class="modal-section-label new-col">🟣 Track 1 — New Clients</div>
+    <div class="modal-cols">
+      <div>
+        <label class="field-label">New client net deposit ($)</label>
+        <input class="field-input" type="number" id="f-new-dep" placeholder="e.g. 120000" step="100">
+      </div>
+      <div>
+        <label class="field-label">Number of new clients</label>
+        <input class="field-input" type="number" id="f-new-clients" placeholder="e.g. 4" step="1" min="0">
+      </div>
+    </div>
+
+    <div class="modal-section-label leg-col">🟢 Track 2 — Legacy Reactivation</div>
+    <div class="modal-cols">
+      <div>
+        <label class="field-label">Legacy net deposit ($)</label>
+        <input class="field-input" type="number" id="f-leg-dep" placeholder="e.g. 80000" step="100">
+      </div>
+      <div>
+        <label class="field-label">Clients reactivated</label>
+        <input class="field-input" type="number" id="f-leg-clients" placeholder="e.g. 2" step="1" min="0">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel-m" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {name:'Pin Nee',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Keng Soon',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Eddie',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Muhammad Luqman',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Thoai',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Trang',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Thi Thu Trang',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Thanh Long',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Kien',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Gia Loc',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Kangun',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Kihyun',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Taehoon',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Jaemin',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Taekyung',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Yeongsu',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Jonggi',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Jinseo',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Subin',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Donghee',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Shota',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Rei',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Yusuke',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Murata',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Shigeru',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Tomoaki',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Mei',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Yuki',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Ken',group:'HKG',newDep:0,newClients:0,legDep:0,legClients:0},
+];
+
+const GOAL=10000000, THRESHOLD=5000000;
+let editIdx=null;
+
+function fmt(n){
+  if(n===0)return'$0';
+  const abs=Math.abs(n);
+  const s=abs>=1e6?'$'+(abs/1e6).toFixed(2)+'M':abs>=1e3?'$'+(abs/1e3).toFixed(1)+'K':'$'+abs.toLocaleString();
+  return(n<0?'-':'+')+s;
+}
+function fmtAbs(n){
+  if(n===0)return'$0';
+  const abs=Math.abs(n);
+  return(n<0?'-':'')+'$'+(abs>=1e6?(abs/1e6).toFixed(2)+'M':abs>=1e3?(abs/1e3).toFixed(1)+'K':abs.toLocaleString());
+}
+
+let filterAll='all', sortCol='new', sortDir=-1;
+
+function setFilterAll(f,el){
+  filterAll=f;
+  el.closest('.controls').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); renderAll();
+}
+
+function toggleSortAll(col){
+  if(sortCol===col) sortDir*=-1;
+  else { sortCol=col; sortDir=-1; }
+  renderAll();
+}
+
+function renderAll(){
+  const q=document.getElementById('search-all').value.toLowerCase();
+  let rows=DATA.map((p,i)=>({...p,idx:i}));
+  if(filterAll!=='all') rows=rows.filter(r=>r.group===filterAll);
+  if(q) rows=rows.filter(r=>r.name.toLowerCase().includes(q));
+
+  // Sort by chosen column
+  rows.sort((a,b)=>sortDir*(b[sortCol==='new'?'newDep':'legDep']-a[sortCol==='new'?'newDep':'legDep']));
+
+  // Global ranks for each track independently
+  const newSorted=[...DATA].sort((a,b)=>b.newDep-a.newDep);
+  const legSorted=[...DATA].sort((a,b)=>b.legDep-a.legDep);
+  const newRanks={}, legRanks={};
+  newSorted.forEach((p,i)=>{ newRanks[p.name]=i+1; });
+  legSorted.forEach((p,i)=>{ legRanks[p.name]=i+1; });
+
+  const maxNew=Math.max(...DATA.map(p=>Math.abs(p.newDep)),1);
+  const maxLeg=Math.max(...DATA.map(p=>Math.abs(p.legDep)),1);
+  const totalNew=DATA.reduce((s,p)=>s+p.newDep,0);
+  const totalLeg=DATA.reduce((s,p)=>s+p.legDep,0);
+  const newLeader=newSorted[0], legLeader=legSorted[0];
+
+  document.getElementById('new-total').textContent=fmtAbs(totalNew);
+  document.getElementById('leg-total').textContent=fmtAbs(totalLeg);
+  document.getElementById('new-leader').textContent=newLeader&&newLeader.newDep>0?newLeader.name:'—';
+  document.getElementById('leg-leader').textContent=legLeader&&legLeader.legDep>0?legLeader.name:'—';
+
+  const tbody=document.getElementById('tbody-all');
+  tbody.innerHTML='';
+  rows.forEach(p=>{
+    // rank shown = rank on the sorted column
+    const displayRank=sortCol==='new'?newRanks[p.name]:legRanks[p.name];
+    const newNeg=p.newDep<0, legNeg=p.legDep<0;
+    const newPct=p.newDep!==0?Math.min(100,(Math.abs(p.newDep)/maxNew)*100):0;
+    const legPct=p.legDep!==0?Math.min(100,(Math.abs(p.legDep)/maxLeg)*100):0;
+    const newRankClass=newRanks[p.name]===1&&p.newDep>0?'gold':newRanks[p.name]===2&&p.newDep>0?'silver':newRanks[p.name]===3&&p.newDep>0?'bronze':'';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="rank-cell ${newRankClass}">${displayRank}</td>
+      <td><span class="partner-name">${p.name}</span><span class="group-pill pill-${p.group}">${p.group}</span></td>
+      <td class="deposit-cell">
+        <div class="deposit-row">
+          <div class="bar-track"><div class="${newNeg?'bar-fill-neg':'bar-fill-new'}" style="width:${newPct.toFixed(1)}%"></div></div>
+          <span class="deposit-amount ${p.newDep===0?'zero':newNeg?'neg':'pos-new'}">${p.newDep===0?'—':fmt(p.newDep)}</span>
+        </div>
+      </td>
+      <td class="deposit-cell">
+        <div class="deposit-row">
+          <div class="bar-track"><div class="${legNeg?'bar-fill-neg':'bar-fill-leg'}" style="width:${legPct.toFixed(1)}%"></div></div>
+          <span class="deposit-amount ${p.legDep===0?'zero':legNeg?'neg':'pos-leg'}">${p.legDep===0?'—':fmt(p.legDep)}</span>
+        </div>
+      </td>
+      <td class="action-cell"><button class="edit-btn" onclick="openModal(${p.idx})">Edit</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateGoals(){
+  const newTotal=DATA.reduce((s,p)=>s+p.newDep,0);
+  const legTotal=DATA.reduce((s,p)=>s+p.legDep,0);
+  const ogTotal=newTotal+legTotal;
+
+  function upTrack(id,total,track){
+    const pct=Math.min(100,Math.max(0,(total/GOAL)*100));
+    const unlocked=total>=THRESHOLD;
+    document.getElementById(id+'-current').textContent=fmtAbs(Math.max(0,total));
+    document.getElementById(id+'-pct').textContent=pct.toFixed(1)+'%';
+    document.getElementById(id+'-pct').className='goal-pct '+(unlocked?track+'-unlocked':'locked');
+    const pill=document.getElementById(id+'-pill');
+    if(total>=GOAL){pill.textContent='Goal reached!';pill.className='goal-status-pill pill-goal';}
+    else if(unlocked){pill.textContent='Prize unlocked';pill.className='goal-status-pill pill-'+track+'-unlocked';}
+    else{pill.textContent='Prize locked';pill.className='goal-status-pill pill-locked';}
+    const bar=document.getElementById(id+'-bar');
+    bar.style.width=pct.toFixed(2)+'%';
+    bar.className='goal-bar-fill '+(unlocked?(track==='new'?'new-fill':'leg-fill'):'locked-fill');
+    const msg=document.getElementById(id+'-msg');
+    if(unlocked){
+      const rem=GOAL-total;
+      msg.className='goal-msg ok-'+track;
+      msg.textContent=rem>0?'✓ Prize unlocked! '+fmtAbs(rem)+' more to hit the $10M goal.':'✓ $10M goal achieved! Prize confirmed.';
+    } else {
+      msg.className='goal-msg warn';
+      msg.textContent='⚠ '+fmtAbs(THRESHOLD-total)+' more needed to unlock this prize (min. $5M).';
+    }
+  }
+
+  upTrack('new',newTotal,'new');
+  upTrack('leg',legTotal,'leg');
+  const ogPct=Math.min(100,Math.max(0,(ogTotal/20000000)*100));
+  document.getElementById('og-current').textContent=fmtAbs(Math.max(0,ogTotal));
+  document.getElementById('og-pct').textContent=ogPct.toFixed(1)+'%';
+  document.getElementById('og-bar').style.width=ogPct.toFixed(2)+'%';
+}
+
+function openModal(idx){
+  editIdx=idx;
+  const p=DATA[idx];
+  document.getElementById('modal-name').textContent=p.name;
+  document.getElementById('f-new-dep').value=p.newDep!==0?p.newDep:'';
+  document.getElementById('f-new-clients').value=p.newClients>0?p.newClients:'';
+  document.getElementById('f-leg-dep').value=p.legDep!==0?p.legDep:'';
+  document.getElementById('f-leg-clients').value=p.legClients>0?p.legClients:'';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');editIdx=null;}
+function handleOverlay(e){if(e.target===document.getElementById('modal'))closeModal();}
+function save(){
+  if(editIdx===null)return;
+  DATA[editIdx].newDep=parseFloat(document.getElementById('f-new-dep').value)||0;
+  DATA[editIdx].newClients=parseInt(document.getElementById('f-new-clients').value)||0;
+  DATA[editIdx].legDep=parseFloat(document.getElementById('f-leg-dep').value)||0;
+  DATA[editIdx].legClients=parseInt(document.getElementById('f-leg-clients').value)||0;
+  closeModal(); renderAll(); updateGoals();
+}
+
+function toggleTC(){
+  document.getElementById('tc-body').classList.toggle('open');
+  document.getElementById('tc-chevron').classList.toggle('open');
+}
+
+function updateProgress(){
+  const start=new Date('2026-05-15'),end=new Date('2026-06-30T23:59:59'),now=new Date();
+  const pct=Math.round(Math.min(100,Math.max(0,((now-start)/(end-start))*100)));
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=pct+'%';
+  const daysLeft=Math.max(0,Math.ceil((end-now)/86400000));
+  document.getElementById('days-txt').textContent=
+    now<start?`Starts in ${Math.ceil((start-now)/86400000)} days`
+    :now>end?'Competition ended'
+    :`${daysLeft} day${daysLeft!==1?'s':''} remaining · 15 May – 30 Jun 2026`;
+}
+
+updateProgress(); renderAll(); updateGoals();
+
+/* ── HERO CANVAS: candlestick chart + ticker tape ── */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, candles=[], ticker=[], particles=[];
+  const GREEN='#00d4a8', RED='#ff6b7a', DIM='rgba(0,212,168,0.08)';
+
+  function resize(){
+    W=canvas.width=canvas.offsetWidth;
+    H=canvas.height=canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  function randBetween(a,b){return a+Math.random()*(b-a);}
+
+  // Generate candles
+  function initCandles(){
+    candles=[];
+    let price=2300;
+    const n=Math.floor(W/18)+4;
+    for(let i=0;i<n;i++){
+      const change=randBetween(-15,18);
+      const open=price;
+      price+=change;
+      const close=price;
+      const high=Math.max(open,close)+randBetween(2,12);
+      const low=Math.min(open,close)-randBetween(2,10);
+      candles.push({x:i*18,open,close,high,low,bull:close>=open});
+    }
+  }
+  initCandles();
+
+  // Ticker symbols
+  const syms=['XAU/USD  +1.24%','EUR/USD  +0.38%','BTC/USD  +2.91%','US30  -0.17%','GBP/USD  +0.55%','NAS100  +1.87%','OIL  +0.93%','AXI ATP  ⬆'];
+  let tickX=W;
+  function initTicker(){
+    ticker=[];
+    let x=W;
+    syms.forEach(s=>{ticker.push({s,x});x+=s.length*9+50;});
+  }
+  initTicker();
+
+  // Particles / glow dots
+  for(let i=0;i<28;i++){
+    particles.push({x:Math.random()*1200,y:Math.random()*420,vx:randBetween(-0.3,0.3),vy:randBetween(-0.2,0.15),r:randBetween(1,3),a:Math.random(),col:Math.random()>0.5?GREEN:'#667eea'});
+  }
+
+  // Chart scroll offset
+  let offset=0, frame=0;
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Background gradient
+    const bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#060a12'); bg.addColorStop(1,'#0d1525');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+    // Grid lines
+    ctx.strokeStyle='rgba(0,212,168,0.04)'; ctx.lineWidth=1;
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+
+    // Glow area under chart line
+    const midH=H*0.45;
+    const priceRange=350;
+    function priceY(p){return midH+(2300-p)/priceRange*(H*0.38);}
+
+    // Glowing area
+    ctx.save();
+    const areaGrad=ctx.createLinearGradient(0,midH-H*0.3,0,midH+H*0.25);
+    areaGrad.addColorStop(0,'rgba(0,212,168,0.12)'); areaGrad.addColorStop(1,'rgba(0,212,168,0)');
+    ctx.beginPath();
+    ctx.moveTo(0,midH);
+    candles.forEach((c,i)=>{const x=(i*18-offset+W*0.05)%W;ctx.lineTo(x,priceY(c.close));});
+    ctx.lineTo(W,midH+H*0.2); ctx.lineTo(0,midH+H*0.2); ctx.closePath();
+    ctx.fillStyle=areaGrad; ctx.fill();
+    ctx.restore();
+
+    // Draw candles
+    candles.forEach((c,i)=>{
+      const x=(i*18-offset+W*0.05);
+      if(x<-20||x>W+20) return;
+      const openY=priceY(c.open), closeY=priceY(c.close), highY=priceY(c.high), lowY=priceY(c.low);
+      const col=c.bull?GREEN:RED;
+      ctx.strokeStyle=col; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(x+7,highY); ctx.lineTo(x+7,lowY); ctx.stroke();
+      ctx.fillStyle=c.bull?'rgba(0,212,168,0.85)':'rgba(255,107,122,0.8)';
+      const top=Math.min(openY,closeY), h=Math.max(Math.abs(closeY-openY),2);
+      ctx.fillRect(x+1,top,12,h);
+    });
+
+    // Moving price line
+    const last=candles[candles.length-1];
+    if(last){
+      const ly=priceY(last.close);
+      ctx.strokeStyle='rgba(0,212,168,0.6)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(0,ly); ctx.lineTo(W,ly); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(0,212,168,0.9)'; ctx.fillRect(W-70,ly-10,68,20);
+      ctx.fillStyle='#0a0e14'; ctx.font='bold 11px DM Mono,monospace';
+      ctx.fillText(last.close.toFixed(2),W-66,ly+4);
+    }
+
+    // Particles
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      p.a=0.3+0.4*Math.sin(frame*0.02+p.x);
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col.replace(')',`,${p.a})`).replace('rgb','rgba'); ctx.fill();
+    });
+
+    // Ticker tape bar at bottom
+    ctx.fillStyle='rgba(6,10,18,0.85)'; ctx.fillRect(0,H-32,W,32);
+    ctx.strokeStyle='rgba(0,212,168,0.2)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,H-32); ctx.lineTo(W,H-32); ctx.stroke();
+    ctx.font='11px DM Mono,monospace'; ctx.fillStyle=GREEN;
+    ticker.forEach(t=>{
+      t.x-=1.2;
+      if(t.x<-t.s.length*9-40) t.x=W+20;
+      const col=t.s.includes('-')?RED:GREEN;
+      ctx.fillStyle=col;
+      ctx.fillText(t.s,t.x,H-12);
+    });
+
+    // Scroll candles slowly
+    offset+=0.4;
+    if(offset>18){offset=0;candles.shift();const last=candles[candles.length-1];const change=randBetween(-12,16);const op=last.close;const cl=op+change;candles.push({open:op,close:cl,high:Math.max(op,cl)+randBetween(2,10),low:Math.min(op,cl)-randBetween(2,8),bull:cl>=op});}
+
+    // Update ATP price displays to match real AXI app
+    if(frame%45===0){
+      const btcBase=79730+randBetween(-80,80);
+      const goldBase=4711+randBetween(-12,18);
+      if(document.getElementById('atp-btc-sell')){
+        document.getElementById('atp-btc-sell').textContent=btcBase.toFixed(2);
+        document.getElementById('atp-btc-buy').textContent=(btcBase+0.10).toFixed(2);
+      }
+      if(document.getElementById('atp-gold-p')) document.getElementById('atp-gold-p').textContent=goldBase.toFixed(1);
+      if(document.getElementById('atp-gold-chg')){
+        const gc=(0.68+randBetween(-0.1,0.2)).toFixed(2);
+        document.getElementById('atp-gold-chg').textContent=(gc>0?'+':'')+gc+'%';
+      }
+      if(document.getElementById('atp-pnl')){
+        const pnl=(-19.27+randBetween(-3,3)).toFixed(2);
+        document.getElementById('atp-pnl').textContent=(pnl<0?'':'+')+'US$'+Math.abs(pnl).toFixed(2);
+        document.getElementById('atp-pnl').style.color=pnl<0?'#dc2626':'#16a34a';
+      }
+      if(document.getElementById('atp-balance')){
+        const bal=(1032+randBetween(-5,15)).toFixed(0);
+        document.getElementById('atp-balance').textContent=parseInt(bal).toLocaleString();
+      }
+    }
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Confetti
+  const confWrap=document.getElementById('confetti-wrap');
+  if(confWrap){
+    const colors=['#f5c842','#00d4a8','#667eea','#ff6b7a','#f093a0','#fff','#ff8c00'];
+    for(let i=0;i<22;i++){
+      const el=document.createElement('div');
+      el.className='confetti-piece';
+      el.style.cssText=`left:${20+Math.random()*120}px;top:${-10-Math.random()*40}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${1.8+Math.random()*2}s;animation-delay:${Math.random()*3}s;transform:rotate(${Math.random()*360}deg);width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+      confWrap.appendChild(el);
+    }
+  }
+})();
+
+</script>
+</body>
+</html>
