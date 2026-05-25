@@ -743,7 +743,7 @@ td { padding: 10px 14px; vertical-align: middle; }
       <div class="competition-title">Partner Competition<br><span class="bangkok-tag">Bangkok Event 2026</span></div>
       <div class="header-sub" id="days-txt">—</div>
     </div>
-    <div class="live-badge"><span class="live-dot"></span>Live Rankings</div>
+    <div class="live-badge" id="live-badge"><span class="live-dot"></span>Live Rankings</div>
   </div>
 </div>
 
@@ -916,7 +916,7 @@ td { padding: 10px 14px; vertical-align: middle; }
   <div class="table-wrap">
     <table>
       <thead><tr>
-        <th onclick="toggleSortAll('new')">#🟣</th>
+        <th onclick="toggleSortAll('total')"># Total ↕</th>
         <th>Partner</th>
         <th onclick="toggleSortAll('new')" style="color:#7c6fea">🟣 New client net deposit</th>
         <th onclick="toggleSortAll('leg')" style="color:#00d4a8">🟢 Legacy client net deposit</th>
@@ -997,34 +997,38 @@ td { padding: 10px 14px; vertical-align: middle; }
 
 <script>
 const DATA = [
-  {name:'Pin Nee',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Keng Soon',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Eddie',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Muhammad Luqman',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Thoai',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Trang',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Thi Thu Trang',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Thanh Long',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Kien',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Gia Loc',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Kangun',group:'SEA',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Kihyun',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Taehoon',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Jaemin',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Taekyung',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Yeongsu',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Jonggi',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Jinseo',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Subin',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
+  // SEA — matched to HTML names where confident; IBName used where no clear match
+  {name:'Pin Nee',group:'SEA',newDep:0,newClients:0,legDep:21958.98,legClients:127},
+  {name:'Keng Soon',group:'SEA',newDep:0,newClients:0,legDep:66285.96,legClients:32},
+  {name:'Eddie',group:'SEA',newDep:1829.75,newClients:4,legDep:29.31,legClients:125},
+  {name:'Muhammad Luqman',group:'SEA',newDep:9664.34,newClients:68,legDep:45591.66,legClients:199},
+  {name:'Thoai',group:'SEA',newDep:0,newClients:0,legDep:-227.00,legClients:3},
+  {name:'Trang',group:'SEA',newDep:0,newClients:0,legDep:-1708.58,legClients:2},
+  {name:'Thi Thu Trang',group:'SEA',newDep:0,newClients:0,legDep:2066.97,legClients:2},
+  {name:'Anh Le',group:'SEA',newDep:0,newClients:0,legDep:2136.64,legClients:31},
+  {name:'Tran Hanh Diu',group:'SEA',newDep:0,newClients:0,legDep:1670.80,legClients:25},
+  {name:'Ly Thi Cam Nguyen',group:'SEA',newDep:0,newClients:0,legDep:7600.00,legClients:1},
+  {name:'Kangun',group:'SEA',newDep:0,newClients:0,legDep:4495.00,legClients:6},
+  // KOR
+  {name:'Kihyun',group:'KOR',newDep:830.30,newClients:2,legDep:12529.07,legClients:26},
+  {name:'Taehoon',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:2},
+  {name:'Gi Yun',group:'KOR',newDep:0,newClients:0,legDep:3653.54,legClients:5},
+  {name:'Taekyung',group:'KOR',newDep:0,newClients:0,legDep:51255.00,legClients:9},
+  {name:'Yeongsu',group:'KOR',newDep:5000.00,newClients:1,legDep:-362.20,legClients:5},
+  {name:'Shin Won Kim',group:'KOR',newDep:0,newClients:1,legDep:13260.00,legClients:3},
+  {name:'Jinseo',group:'KOR',newDep:0,newClients:0,legDep:-464.90,legClients:8},
+  {name:'Subin',group:'KOR',newDep:0,newClients:1,legDep:3390.10,legClients:7},
   {name:'Donghee',group:'KOR',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Shota',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  // JPN
+  {name:'Shota',group:'JPN',newDep:0,newClients:0,legDep:-255.23,legClients:14},
   {name:'Rei',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
   {name:'Yusuke',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
   {name:'Murata',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
   {name:'Shigeru',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
   {name:'Tomoaki',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
   {name:'Mei',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
-  {name:'Yuki',group:'JPN',newDep:0,newClients:0,legDep:0,legClients:0},
+  {name:'Yuki',group:'JPN',newDep:754.57,newClients:2,legDep:-11692.61,legClients:84},
+  // HKG
   {name:'Ken',group:'HKG',newDep:0,newClients:0,legDep:0,legClients:0},
 ];
 
@@ -1043,7 +1047,7 @@ function fmtAbs(n){
   return(n<0?'-':'')+'$'+(abs>=1e6?(abs/1e6).toFixed(2)+'M':abs>=1e3?(abs/1e3).toFixed(1)+'K':abs.toLocaleString());
 }
 
-let filterAll='all', sortCol='new', sortDir=-1;
+let filterAll='all', sortCol='total', sortDir=1;
 
 function setFilterAll(f,el){
   filterAll=f;
@@ -1064,14 +1068,20 @@ function renderAll(){
   if(q) rows=rows.filter(r=>r.name.toLowerCase().includes(q));
 
   // Sort by chosen column
-  rows.sort((a,b)=>sortDir*(b[sortCol==='new'?'newDep':'legDep']-a[sortCol==='new'?'newDep':'legDep']));
+  rows.sort((a,b)=>{
+    const av=sortCol==='new'?a.newDep:sortCol==='leg'?a.legDep:a.newDep+a.legDep;
+    const bv=sortCol==='new'?b.newDep:sortCol==='leg'?b.legDep:b.newDep+b.legDep;
+    return sortDir*(bv-av);
+  });
 
-  // Global ranks for each track independently
+  // Global ranks
   const newSorted=[...DATA].sort((a,b)=>b.newDep-a.newDep);
   const legSorted=[...DATA].sort((a,b)=>b.legDep-a.legDep);
-  const newRanks={}, legRanks={};
+  const totalSorted=[...DATA].sort((a,b)=>(b.newDep+b.legDep)-(a.newDep+a.legDep));
+  const newRanks={}, legRanks={}, totalRanks={};
   newSorted.forEach((p,i)=>{ newRanks[p.name]=i+1; });
   legSorted.forEach((p,i)=>{ legRanks[p.name]=i+1; });
+  totalSorted.forEach((p,i)=>{ totalRanks[p.name]=i+1; });
 
   const maxNew=Math.max(...DATA.map(p=>Math.abs(p.newDep)),1);
   const maxLeg=Math.max(...DATA.map(p=>Math.abs(p.legDep)),1);
@@ -1087,12 +1097,13 @@ function renderAll(){
   const tbody=document.getElementById('tbody-all');
   tbody.innerHTML='';
   rows.forEach(p=>{
-    // rank shown = rank on the sorted column
-    const displayRank=sortCol==='new'?newRanks[p.name]:legRanks[p.name];
+    // rank shown = rank on the sorted column (default: total)
+    const displayRank=sortCol==='new'?newRanks[p.name]:sortCol==='leg'?legRanks[p.name]:totalRanks[p.name];
+    const tot=p.newDep+p.legDep;
     const newNeg=p.newDep<0, legNeg=p.legDep<0;
     const newPct=p.newDep!==0?Math.min(100,(Math.abs(p.newDep)/maxNew)*100):0;
     const legPct=p.legDep!==0?Math.min(100,(Math.abs(p.legDep)/maxLeg)*100):0;
-    const newRankClass=newRanks[p.name]===1&&p.newDep>0?'gold':newRanks[p.name]===2&&p.newDep>0?'silver':newRanks[p.name]===3&&p.newDep>0?'bronze':'';
+    const newRankClass=totalRanks[p.name]===1&&tot>0?'gold':totalRanks[p.name]===2&&tot>0?'silver':totalRanks[p.name]===3&&tot>0?'bronze':'';
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td class="rank-cell ${newRankClass}">${displayRank}</td>
@@ -1190,6 +1201,98 @@ function updateProgress(){
 }
 
 updateProgress(); renderAll(); updateGoals();
+
+/* ── DATABRICKS LIVE DATA ── */
+const DB_HOST='https://adb-2462610410844431.11.azuredatabricks.net';
+const DB_WH='d1046c4e6d45f17d';
+const DB_TOK='dapi82d5e6f2a017fdbd5450b6b472dccef4';
+const COMP_SQL=`SELECT
+  j.Country, y.IBName, z.AgentCode, z.TotalND, z.NTC_ND, z.ExistingND, z.Active_Clients, z.NTC
+FROM (
+  SELECT
+    CASE WHEN w.Introducing_Broker_Ref IS NULL THEN TA.AgentCode ELSE w.Introducing_Broker_Ref END AS AgentCode,
+    SUM(x.Deposits + x.Withdrawals) AS TotalND,
+    SUM(CASE WHEN X.NTC_daily = 1 THEN x.Deposits + x.Withdrawals END) AS NTC_ND,
+    SUM(CASE WHEN X.NTC_daily = 0 THEN x.Deposits + x.Withdrawals END) AS ExistingND,
+    COUNT(DISTINCT CASE WHEN x.actives = 1 THEN x.ClientId END) AS Active_Clients,
+    COUNT(DISTINCT CASE WHEN x.ntc_daily = 1 THEN x.ClientId END) AS NTC
+  FROM fpa.daily_kpi.daily_kpi_bo x
+  LEFT JOIN (
+    SELECT DISTINCT CustomerId, AgentCode FROM (
+      SELECT DISTINCT Customer_Id AS CustomerId, Agent_Code AS AgentCode,
+        MAX(Last_updated) OVER(PARTITION BY Customer_id) AS max_last_updated, last_updated
+      FROM prod_gold.dbt_customers.fct_trading_account
+    ) WHERE last_updated = max_last_updated
+  ) TA ON TA.CustomerId = x.ClientID
+  LEFT JOIN prod_gold.dbt_customers.fct_customer w ON w.Customer_Id = x.ClientID
+  WHERE date_format(x.date, 'yyyy-MM-dd') >= '2026-05-15'
+  GROUP BY 1
+) z
+LEFT JOIN fpa.client_stats.ibname y ON z.AgentCode = y.IBName
+LEFT JOIN prod_gold.dbt_customers.fct_trading_account u ON u.platform_login = z.AgentCode
+LEFT JOIN prod_gold.dbt_customers.fct_customer j ON u.customer_id = j.customer_id
+WHERE z.AgentCode IN (
+  '4739440','4727027','402612','4740341','4727571','829726','4227663','4423270',
+  '872412','4734001','4727252','4729317','4727422','4727245','4733537','4735645',
+  '4727039','4709067','4727029','4734464','4741551','4406000'
+)`;
+
+function countryToGroup(c){
+  if(!c) return 'SEA';
+  c=c.toLowerCase();
+  if(c.includes('korea')) return 'KOR';
+  if(c.includes('japan')) return 'JPN';
+  if(c.includes('hong kong')||c==='hk'||c==='hkg') return 'HKG';
+  return 'SEA';
+}
+
+async function fetchLiveData(){
+  const badge=document.getElementById('live-badge');
+  if(badge) badge.innerHTML='<span class="live-dot" style="background:#f5c842;animation:none"></span>Fetching…';
+  try{
+    const r=await fetch(DB_HOST+'/api/2.0/sql/statements',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+DB_TOK,'Content-Type':'application/json'},
+      body:JSON.stringify({warehouse_id:DB_WH,statement:COMP_SQL,wait_timeout:'50s',format:'JSON_ARRAY'})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const json=await r.json();
+    if(json.status?.state!=='SUCCEEDED') throw new Error(json.status?.error?.message||json.status?.state||'FAILED');
+    const cols={};
+    (json.manifest?.schema?.columns||[]).forEach((c,i)=>{cols[c.name]=i;});
+    const rows=json.result?.data_array||[];
+    if(!rows.length) throw new Error('No rows returned');
+    const fresh=rows.map(row=>({
+      name:(row[cols.IBName]&&!/^\d+$/.test(row[cols.IBName]))?row[cols.IBName]:(row[cols.AgentCode]||'Unknown'),
+      group:countryToGroup(row[cols.Country]),
+      newDep:parseFloat(row[cols.NTC_ND])||0,
+      newClients:parseInt(row[cols.NTC])||0,
+      legDep:parseFloat(row[cols.ExistingND])||0,
+      legClients:parseInt(row[cols.Active_Clients])||0
+    }));
+    DATA.length=0;
+    fresh.forEach(p=>DATA.push(p));
+    renderAll();updateGoals();
+    if(badge){
+      const ts=new Date().toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit'});
+      badge.innerHTML='<span class="live-dot"></span>Live · '+ts+' SGT';
+    }
+  }catch(err){
+    console.error('Databricks fetch failed:',err);
+    if(badge) badge.innerHTML='<span class="live-dot" style="background:#ff6b7a"></span>Cached data';
+  }
+}
+
+function scheduleNextRefresh(){
+  const now=new Date();
+  const next=new Date();
+  next.setUTCHours(6,0,0,0); // 14:00 SGT = 06:00 UTC
+  if(next<=now) next.setUTCDate(next.getUTCDate()+1);
+  setTimeout(()=>{fetchLiveData();scheduleNextRefresh();},next-now);
+}
+
+fetchLiveData();
+scheduleNextRefresh();
 
 /* ── HERO CANVAS: candlestick chart + ticker tape ── */
 (function(){
