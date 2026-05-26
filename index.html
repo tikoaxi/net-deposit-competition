@@ -556,7 +556,6 @@ td { padding: 10px 14px; vertical-align: middle; }
   .admin-notice { font-size: 10px; padding: 10px 12px; }
 }
 </style>
-<script src="config.js"></script>
 </head>
 <body>
 
@@ -1144,41 +1143,7 @@ function updateProgress(){
 
 updateProgress(); renderAll(); updateGoals();
 
-/* ── DATABRICKS LIVE DATA ── */
-const DB_HOST=DB_CONFIG.host;
-const DB_WH=DB_CONFIG.wh;
-const DB_TOK=DB_CONFIG.tok;
-const COMP_SQL=`SELECT
-  j.Country, y.IBName, z.AgentCode, z.TotalND, z.NTC_ND, z.ExistingND, z.Active_Clients, z.NTC
-FROM (
-  SELECT
-    CASE WHEN w.Introducing_Broker_Ref IS NULL THEN TA.AgentCode ELSE w.Introducing_Broker_Ref END AS AgentCode,
-    SUM(x.Deposits + x.Withdrawals) AS TotalND,
-    SUM(CASE WHEN X.NTC_daily = 1 THEN x.Deposits + x.Withdrawals END) AS NTC_ND,
-    SUM(CASE WHEN X.NTC_daily = 0 THEN x.Deposits + x.Withdrawals END) AS ExistingND,
-    COUNT(DISTINCT CASE WHEN x.actives = 1 THEN x.ClientId END) AS Active_Clients,
-    COUNT(DISTINCT CASE WHEN x.ntc_daily = 1 THEN x.ClientId END) AS NTC
-  FROM fpa.daily_kpi.daily_kpi_bo x
-  LEFT JOIN (
-    SELECT DISTINCT CustomerId, AgentCode FROM (
-      SELECT DISTINCT Customer_Id AS CustomerId, Agent_Code AS AgentCode,
-        MAX(Last_updated) OVER(PARTITION BY Customer_id) AS max_last_updated, last_updated
-      FROM prod_gold.dbt_customers.fct_trading_account
-    ) WHERE last_updated = max_last_updated
-  ) TA ON TA.CustomerId = x.ClientID
-  LEFT JOIN prod_gold.dbt_customers.fct_customer w ON w.Customer_Id = x.ClientID
-  WHERE date_format(x.date, 'yyyy-MM-dd') >= '2026-05-15'
-  GROUP BY 1
-) z
-LEFT JOIN fpa.client_stats.ibname y ON z.AgentCode = y.IBName
-LEFT JOIN prod_gold.dbt_customers.fct_trading_account u ON u.platform_login = z.AgentCode
-LEFT JOIN prod_gold.dbt_customers.fct_customer j ON u.customer_id = j.customer_id
-WHERE z.AgentCode IN (
-  '4739440','4727027','402612','4740341','4727571','829726','4227663','4423270',
-  '872412','4734001','4727252','4729317','4727422','4727245','4733537','4735645',
-  '4727039','4709067','4727029','4734464','4741551','4406000'
-)`;
-
+/* ── LEADERBOARD DATA (pre-rendered daily by GitHub Actions → data.json) ── */
 function countryToGroup(c){
   if(!c) return 'SEA';
   c=c.toLowerCase();
@@ -1190,20 +1155,15 @@ function countryToGroup(c){
 
 async function fetchLiveData(){
   const badge=document.getElementById('live-badge');
-  if(badge) badge.innerHTML='<span class="live-dot" style="background:#f5c842;animation:none"></span>Fetching…';
+  if(badge) badge.innerHTML='<span class="live-dot" style="background:#f5c842;animation:none"></span>Loading…';
   try{
-    const r=await fetch(DB_HOST+'/api/2.0/sql/statements',{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+DB_TOK,'Content-Type':'application/json'},
-      body:JSON.stringify({warehouse_id:DB_WH,statement:COMP_SQL,wait_timeout:'50s',format:'JSON_ARRAY'})
-    });
+    const r=await fetch('data.json',{cache:'no-cache'});
     if(!r.ok) throw new Error('HTTP '+r.status);
     const json=await r.json();
-    if(json.status?.state!=='SUCCEEDED') throw new Error(json.status?.error?.message||json.status?.state||'FAILED');
     const cols={};
-    (json.manifest?.schema?.columns||[]).forEach((c,i)=>{cols[c.name]=i;});
-    const rows=json.result?.data_array||[];
-    if(!rows.length) throw new Error('No rows returned');
+    (json.columns||[]).forEach((name,i)=>{cols[name]=i;});
+    const rows=json.rows||[];
+    if(!rows.length) throw new Error('No rows in data.json');
     const fresh=rows.map(row=>({
       name:(row[cols.IBName]&&!/^\d+$/.test(row[cols.IBName]))?row[cols.IBName]:(row[cols.AgentCode]||'Unknown'),
       group:countryToGroup(row[cols.Country]),
@@ -1216,20 +1176,24 @@ async function fetchLiveData(){
     fresh.forEach(p=>DATA.push(p));
     renderAll();updateGoals();
     if(badge){
-      const ts=new Date().toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit'});
+      const updated=json.updated_at?new Date(json.updated_at):new Date();
+      const ts=updated.toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit'});
       badge.innerHTML='<span class="live-dot"></span>Live · '+ts+' SGT';
     }
   }catch(err){
-    console.error('Databricks fetch failed:',err);
+    console.error('Leaderboard load failed:',err);
     if(badge) badge.innerHTML='<span class="live-dot" style="background:#ff6b7a"></span>Cached data';
   }
 }
 
 function scheduleNextRefresh(){
+  // Re-fetch data.json a few minutes after each 4-hourly workflow run.
+  // Workflow fires at 00,04,08,12,16,20 UTC. We wait until :08 past to allow for GitHub cron delay.
   const now=new Date();
-  const next=new Date();
-  next.setUTCHours(6,0,0,0); // 14:00 SGT = 06:00 UTC
-  if(next<=now) next.setUTCDate(next.getUTCDate()+1);
+  const next=new Date(now);
+  const nextHour=Math.ceil((now.getUTCHours()*60+now.getUTCMinutes()+1)/240)*4;
+  next.setUTCHours(nextHour,8,0,0);
+  if(next<=now) next.setUTCHours(next.getUTCHours()+4);
   setTimeout(()=>{fetchLiveData();scheduleNextRefresh();},next-now);
 }
 

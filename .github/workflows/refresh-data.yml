@@ -1,0 +1,69 @@
+name: Refresh leaderboard data
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'   # every 4 hours at minute 0 (UTC). Note: GitHub may delay by 5-15 min under load.
+  workflow_dispatch:       # allow manual triggers from the Actions tab
+
+permissions:
+  contents: write          # needed so the action can commit data.json
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Query Databricks and write data.json
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_WAREHOUSE_ID: ${{ secrets.DATABRICKS_WAREHOUSE_ID }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # Build the request body, embedding query.sql as a JSON string
+          jq -n \
+            --arg wh "$DATABRICKS_WAREHOUSE_ID" \
+            --rawfile sql query.sql \
+            '{warehouse_id: $wh, statement: $sql, wait_timeout: "50s", format: "JSON_ARRAY"}' \
+            > request.json
+
+          # Call Databricks SQL Statements API
+          curl -sSf -X POST "$DATABRICKS_HOST/api/2.0/sql/statements" \
+            -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @request.json \
+            -o response.json
+
+          # Fail loudly if the statement didn't succeed
+          state=$(jq -r '.status.state' response.json)
+          if [ "$state" != "SUCCEEDED" ]; then
+            echo "Databricks query failed with state=$state"
+            jq '.status' response.json
+            exit 1
+          fi
+
+          # Slim response down to just what the frontend needs
+          jq '{
+            updated_at: (now | todate),
+            columns:    [.manifest.schema.columns[].name],
+            rows:       (.result.data_array // [])
+          }' response.json > data.json
+
+          # Clean up scratch files so they don't get committed
+          rm -f request.json response.json
+
+          echo "Wrote data.json with $(jq '.rows | length' data.json) rows."
+
+      - name: Commit data.json if it changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "Refresh leaderboard data ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+          fi
