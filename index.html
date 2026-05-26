@@ -556,6 +556,7 @@ td { padding: 10px 14px; vertical-align: middle; }
   .admin-notice { font-size: 10px; padding: 10px 12px; }
 }
 </style>
+<script src="config.js"></script>
 </head>
 <body>
 
@@ -920,7 +921,6 @@ td { padding: 10px 14px; vertical-align: middle; }
         <th>Partner</th>
         <th onclick="toggleSortAll('new')" style="color:#7c6fea">🟣 New client net deposit</th>
         <th onclick="toggleSortAll('leg')" style="color:#00d4a8">🟢 Legacy client net deposit</th>
-        <th></th>
       </tr></thead>
       <tbody id="tbody-all"></tbody>
     </table>
@@ -958,42 +958,6 @@ td { padding: 10px 14px; vertical-align: middle; }
 
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="handleOverlay(event)">
-  <div class="modal-box">
-    <div class="modal-title" id="modal-name">Update partner data</div>
-    <div class="modal-sub">Enter figures for each track — leave blank if none</div>
-
-    <div class="modal-section-label new-col">🟣 Track 1 — New Clients</div>
-    <div class="modal-cols">
-      <div>
-        <label class="field-label">New client net deposit ($)</label>
-        <input class="field-input" type="number" id="f-new-dep" placeholder="e.g. 120000" step="100">
-      </div>
-      <div>
-        <label class="field-label">Number of new clients</label>
-        <input class="field-input" type="number" id="f-new-clients" placeholder="e.g. 4" step="1" min="0">
-      </div>
-    </div>
-
-    <div class="modal-section-label leg-col">🟢 Track 2 — Legacy Reactivation</div>
-    <div class="modal-cols">
-      <div>
-        <label class="field-label">Legacy net deposit ($)</label>
-        <input class="field-input" type="number" id="f-leg-dep" placeholder="e.g. 80000" step="100">
-      </div>
-      <div>
-        <label class="field-label">Clients reactivated</label>
-        <input class="field-input" type="number" id="f-leg-clients" placeholder="e.g. 2" step="1" min="0">
-      </div>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancel-m" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="save()">Save</button>
-    </div>
-  </div>
-</div>
 
 <script>
 const DATA = [
@@ -1033,7 +997,6 @@ const DATA = [
 ];
 
 const GOAL=10000000, THRESHOLD=5000000;
-let editIdx=null;
 
 function fmt(n){
   if(n===0)return'$0';
@@ -1120,7 +1083,7 @@ function renderAll(){
           <span class="deposit-amount ${p.legDep===0?'zero':legNeg?'neg':'pos-leg'}">${p.legDep===0?'—':fmt(p.legDep)}</span>
         </div>
       </td>
-      <td class="action-cell"><button class="edit-btn" onclick="openModal(${p.idx})">Edit</button></td>`;
+      `;
     tbody.appendChild(tr);
   });
 }
@@ -1162,27 +1125,6 @@ function updateGoals(){
   document.getElementById('og-bar').style.width=ogPct.toFixed(2)+'%';
 }
 
-function openModal(idx){
-  editIdx=idx;
-  const p=DATA[idx];
-  document.getElementById('modal-name').textContent=p.name;
-  document.getElementById('f-new-dep').value=p.newDep!==0?p.newDep:'';
-  document.getElementById('f-new-clients').value=p.newClients>0?p.newClients:'';
-  document.getElementById('f-leg-dep').value=p.legDep!==0?p.legDep:'';
-  document.getElementById('f-leg-clients').value=p.legClients>0?p.legClients:'';
-  document.getElementById('modal').classList.add('open');
-}
-function closeModal(){document.getElementById('modal').classList.remove('open');editIdx=null;}
-function handleOverlay(e){if(e.target===document.getElementById('modal'))closeModal();}
-function save(){
-  if(editIdx===null)return;
-  DATA[editIdx].newDep=parseFloat(document.getElementById('f-new-dep').value)||0;
-  DATA[editIdx].newClients=parseInt(document.getElementById('f-new-clients').value)||0;
-  DATA[editIdx].legDep=parseFloat(document.getElementById('f-leg-dep').value)||0;
-  DATA[editIdx].legClients=parseInt(document.getElementById('f-leg-clients').value)||0;
-  closeModal(); renderAll(); updateGoals();
-}
-
 function toggleTC(){
   document.getElementById('tc-body').classList.toggle('open');
   document.getElementById('tc-chevron').classList.toggle('open');
@@ -1203,9 +1145,9 @@ function updateProgress(){
 updateProgress(); renderAll(); updateGoals();
 
 /* ── DATABRICKS LIVE DATA ── */
-const DB_HOST='https://adb-2462610410844431.11.azuredatabricks.net';
-const DB_WH='d1046c4e6d45f17d';
-const DB_TOK='dapi82d5e6f2a017fdbd5450b6b472dccef4';
+const DB_HOST=DB_CONFIG.host;
+const DB_WH=DB_CONFIG.wh;
+const DB_TOK=DB_CONFIG.tok;
 const COMP_SQL=`SELECT
   j.Country, y.IBName, z.AgentCode, z.TotalND, z.NTC_ND, z.ExistingND, z.Active_Clients, z.NTC
 FROM (
