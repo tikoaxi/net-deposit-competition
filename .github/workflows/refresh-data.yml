@@ -65,5 +65,14 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "Refresh leaderboard data ($(date -u +%Y-%m-%dT%H:%MZ))"
-            git push
+            # Retry push up to 3 times, rebasing on top of any remote changes
+            for i in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              echo "Push attempt $i failed, pulling latest and retrying..."
+              git pull --rebase origin main
+            done
+            echo "Push failed after 3 attempts."
+            exit 1
           fi
